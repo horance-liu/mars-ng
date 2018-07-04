@@ -4,19 +4,15 @@
 #include "mars/core/Test.h"
 
 struct TestCase : Test {
-  explicit TestCase(const std::string& = "");
+  using Test::Test;
 
 private:
-  const std::string& getName() const override;
   void run() override;
 
 private:
   virtual void setUp() {}
   virtual void runTest() {}
   virtual void tearDown() {}
-
-private:
-  std::string name;
 };
 
 #endif
