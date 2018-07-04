@@ -7,12 +7,20 @@ int TestCase::countTestCases() const {
 }
 
 void TestCase::run(TestResult& result) {
-  setUp();
-
+  bool succ = false;
   try {
-    runTest();
+    setUp();
+    succ = true;
   } catch (const AssertionError&) {
     result.onFail();
+  }
+
+  if (succ) {
+    try {
+      runTest();
+    } catch (const AssertionError&) {
+      result.onFail();
+    }
   }
 
   tearDown();

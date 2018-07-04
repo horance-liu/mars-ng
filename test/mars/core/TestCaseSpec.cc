@@ -23,7 +23,10 @@ namespace {
   protected:
     TestResult result;
   };
+}
 
+
+namespace {
   struct AssertionFailedTest : TestCase {
     void runTest() override {
       throw AssertionError("test.cpp:57", "expected value == 2, but got 3");
@@ -37,3 +40,27 @@ TEST_F(TestCaseSpec, throw_assertion_error_on_run_test) {
 
   ASSERT_EQ(1, result.failCount());
 }
+
+namespace {
+  struct AssertionFailedOnSetUpTest : TestCase {
+    bool wasRun = false;
+
+  private:
+    void setUp() override {
+      throw AssertionError("test.cpp:57", "expected value == 2, but got 3");
+    }
+
+    void runTest() override {
+      wasRun = true;
+    }
+  };
+}
+
+TEST_F(TestCaseSpec, throw_assertion_error_on_setup) {
+  AssertionFailedOnSetUpTest test;
+  run(test);
+
+  ASSERT_EQ(1, result.failCount());
+  ASSERT_FALSE(test.wasRun);
+}
+
