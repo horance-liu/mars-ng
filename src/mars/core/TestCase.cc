@@ -6,7 +6,6 @@ int TestCase::countTestCases() const {
   return 1;
 }
 
-
 void TestCase::run(TestResult& result) {
   bool succ = false;
   try {
@@ -21,6 +20,8 @@ void TestCase::run(TestResult& result) {
       runTest();
     } catch (const AssertionError&) {
       result.onFail();
+    } catch (const std::exception&) {
+      result.onError();
     }
   }
 

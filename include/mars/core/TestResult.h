@@ -5,10 +5,14 @@ struct TestResult {
   TestResult();
 
   int failCount() const;
+  int errorCount() const;
+
   void onFail();
+  void onError();
 
 private:
   int numOfFails;
+  int numOfErrors;
 };
 
 #endif

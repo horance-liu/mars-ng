@@ -79,3 +79,19 @@ TEST_F(TestCaseSpec, throw_assertion_error_on_tear_down) {
   ASSERT_EQ(1, result.failCount());
 }
 
+namespace {
+  struct StdExceptionTest : TestCase {
+    void runTest() override {
+      throw std::exception();
+    }
+  };
+}
+
+TEST_F(TestCaseSpec, throw_std_exception_on_run_test) {
+  StdExceptionTest test;
+  run(test);
+
+  ASSERT_EQ(0, result.failCount());
+  ASSERT_EQ(1, result.errorCount());
+}
+
