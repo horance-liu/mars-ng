@@ -158,3 +158,20 @@ TEST_F(TestCaseSpec, throw_unknown_exception_on_setup) {
   ASSERT_EQ(0, result.failCount());
   ASSERT_EQ(1, result.errorCount());
 }
+
+namespace {
+  struct UnknownExceptionOnTearDownTest : TestCase {
+    void tearDown() override {
+      throw std::out_of_range("overflow");
+    }
+  };
+}
+
+TEST_F(TestCaseSpec, throw_unknown_exception_on_tear_down) {
+  UnknownExceptionOnTearDownTest test;
+  run(test);
+
+  ASSERT_EQ(0, result.failCount());
+  ASSERT_EQ(1, result.errorCount());
+}
+
