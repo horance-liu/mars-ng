@@ -6,6 +6,13 @@ TestResult::TestResult()
   : numOfFails(0), numOfErrors(0) {
 }
 
+TestResult::~TestResult() {
+  for (auto f : failures) {
+    delete f;
+  }
+}
+
+
 int TestResult::failCount() const {
   return numOfFails;
 }
@@ -14,7 +21,7 @@ int TestResult::errorCount() const {
   return numOfErrors;
 }
 
-const std::vector<std::string>& TestResult::getFailures() const {
+const std::vector<TestFailure*>& TestResult::getFailures() const {
   return failures;
 }
 
@@ -36,7 +43,7 @@ bool TestResult::protect(const TestCaseFunctor& f) {
 }
 
 void TestResult::onFail(std::string&& msg) {
-  failures.emplace_back(std::move(msg));
+  failures.push_back(new TestFailure(std::move(msg), true));
   numOfFails++;
 }
 

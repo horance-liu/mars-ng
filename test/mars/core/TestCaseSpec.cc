@@ -46,8 +46,18 @@ TEST_F(TestCaseSpec, throw_assertion_error_on_run_test) {
   run(test);
 
   ASSERT_EQ(1, result.failCount());
-  ASSERT_FALSE(result.getFailures().empty());
-  ASSERT_EQ(test.expectMsg(), result.getFailures().front());
+}
+
+TEST_F(TestCaseSpec, cache_failure_if_throw_assertion_error_on_run_test) {
+  AssertionFailedTest test;
+  run(test);
+
+  auto& failures = result.getFailures();
+  ASSERT_FALSE(failures.empty());
+
+  auto& failure = failures.front();
+  ASSERT_TRUE(failure->isFailure());
+  ASSERT_EQ(test.expectMsg(), failure->getExceptionMsg());
 }
 
 namespace {
