@@ -7,15 +7,13 @@ struct TestCase : Test {
   using Test::Test;
 
 private:
+  int countTestCases() const override;
   void run(TestResult&) override;
 
 private:
   virtual void setUp() {}
   virtual void runTest() {}
   virtual void tearDown() {}
-
-private:
-  void runBare();
 };
 
 #endif

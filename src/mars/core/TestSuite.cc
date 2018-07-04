@@ -17,6 +17,14 @@ TestSuite::~TestSuite() {
   });
 }
 
+int TestSuite::countTestCases() const {
+  auto num = 0;
+  foreach([&num](auto test) {
+    num += test->countTestCases();
+  });
+  return num;
+}
+
 void TestSuite::run(TestResult& result) {
   foreach([&result](auto test) {
     test->run(result);

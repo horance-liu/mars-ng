@@ -9,6 +9,10 @@ namespace {
       test.run(result);
     }
 
+    int countTestCases(::Test& test) {
+      return test.countTestCases();
+    }
+
   protected:
     TestResult result;
   };
@@ -21,7 +25,7 @@ TEST_F(TestSuiteSpec, run_multi_test_cases_using_test_suite) {
 
   run(suite);
 
-  ASSERT_EQ(2, result.runCount());
+  ASSERT_EQ(2, countTestCases(suite));
 }
 
 TEST_F(TestSuiteSpec, package_sub_test_suite_into_outter_test_suite) {
@@ -34,6 +38,6 @@ TEST_F(TestSuiteSpec, package_sub_test_suite_into_outter_test_suite) {
 
   run(outter);
 
-  ASSERT_EQ(2, result.runCount());
+  ASSERT_EQ(2, countTestCases(outter));
 }
 

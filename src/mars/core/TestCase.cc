@@ -1,13 +1,12 @@
 #include "mars/core/TestCase.h"
 #include "mars/core/TestResult.h"
 
-void TestCase::runBare() {
-  setUp();
-  runTest();
-  tearDown();
+int TestCase::countTestCases() const {
+  return 1;
 }
 
 void TestCase::run(TestResult& result) {
-  result.onRun();
-  runBare();
+  setUp();
+  runTest();
+  tearDown();
 }

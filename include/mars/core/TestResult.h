@@ -3,12 +3,6 @@
 
 struct TestResult {
   TestResult();
-
-  void onRun();
-  int runCount() const;
-
-private:
-  int numOfRuns;
 };
 
 #endif
