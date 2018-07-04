@@ -12,6 +12,10 @@ struct TestSuite {
   void run();
 
 private:
+  template <typename F>
+  void foreach(F f) const;
+
+private:
   std::vector<TestCase*> tests;
 };
 

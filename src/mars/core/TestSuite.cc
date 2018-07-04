@@ -5,14 +5,21 @@ void TestSuite::add(TestCase* test) {
   tests.push_back(test);
 }
 
-TestSuite::~TestSuite() {
+template <typename F>
+inline void TestSuite::foreach(F f) const {
   for (auto test : tests) {
-    delete test;
+    f(test);
   }
 }
 
+TestSuite::~TestSuite() {
+  foreach([](auto test) {
+    delete test;
+  });
+}
+
 void TestSuite::run() {
-  for (auto test : tests) {
+  foreach([](auto test) {
     test->run();
-  }
+  });
 }
