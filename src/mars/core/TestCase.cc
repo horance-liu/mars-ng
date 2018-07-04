@@ -6,10 +6,10 @@ int TestCase::countTestCases() const {
   return 1;
 }
 
-void TestCase::run(TestResult& result) {
+bool TestCase::protect(TestResult& result, Method method) {
   bool succ = false;
   try {
-    setUp();
+    (this->*method)();
     succ = true;
   } catch (const AssertionError&) {
     result.onFail();
@@ -18,26 +18,12 @@ void TestCase::run(TestResult& result) {
   } catch (...) {
     result.onError();
   }
+  return succ;
+}
 
-  if (succ) {
-    try {
-      runTest();
-    } catch (const AssertionError&) {
-      result.onFail();
-    } catch (const std::exception&) {
-      result.onError();
-    } catch (...) {
-      result.onError();
-    }
+void TestCase::run(TestResult& result) {
+  if (protect(result, &TestCase::setUp)) {
+    protect(result, &TestCase::runTest);
   }
-
-  try {
-    tearDown();
-  } catch (const AssertionError&) {
-    result.onFail();
-  } catch (const std::exception&) {
-    result.onError();
-  } catch (...) {
-    result.onError();
-  }
+  protect(result, &TestCase::tearDown);
 }

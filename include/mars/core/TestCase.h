@@ -14,6 +14,10 @@ private:
   virtual void setUp() {}
   virtual void runTest() {}
   virtual void tearDown() {}
+
+private:
+  using Method = void(TestCase::*)();
+  bool protect(TestResult& result, Method method);
 };
 
 #endif
