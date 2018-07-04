@@ -57,8 +57,8 @@ TEST_F(TestCaseSpec, cache_failure_if_throw_assertion_error_on_run_test) {
   ASSERT_FALSE(failures.empty());
 
   auto& failure = failures.front();
-  ASSERT_TRUE(failure->isFailure());
-  ASSERT_EQ(test.expectMsg(), failure->getExceptionMsg());
+  ASSERT_TRUE(failure.isFailure());
+  ASSERT_EQ(test.expectMsg(), failure.getExceptionMsg());
 }
 
 namespace {
@@ -128,9 +128,9 @@ TEST_F(TestCaseSpec, cache_error_if_throw_std_exception_on_run_test) {
   auto& errors = result.getFailures();
   ASSERT_FALSE(errors.empty());
 
-  auto error = errors.front();
-  ASSERT_TRUE(error->isError());
-  ASSERT_EQ(test.expectMsg(), error->getExceptionMsg());
+  auto& error = errors.front();
+  ASSERT_TRUE(error.isError());
+  ASSERT_EQ(test.expectMsg(), error.getExceptionMsg());
 }
 
 namespace {
@@ -195,9 +195,9 @@ TEST_F(TestCaseSpec, cache_error_if_throw_unknown_exception_on_run_test) {
   auto& errors = result.getFailures();
   ASSERT_FALSE(errors.empty());
 
-  auto error = errors.front();
-  ASSERT_TRUE(error->isError());
-  ASSERT_EQ(test.expectMsg(), error->getExceptionMsg());
+  auto& error = errors.front();
+  ASSERT_TRUE(error.isError());
+  ASSERT_EQ(test.expectMsg(), error.getExceptionMsg());
 }
 
 namespace {
