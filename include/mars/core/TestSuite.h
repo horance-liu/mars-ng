@@ -6,6 +6,8 @@
 struct TestCase;
 
 struct TestSuite {
+  ~TestSuite();
+
   void add(TestCase* test);
   void run();
 
