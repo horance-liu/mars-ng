@@ -15,6 +15,8 @@ void TestCase::run(TestResult& result) {
     result.onFail();
   } catch (const std::exception&) {
     result.onError();
+  } catch (...) {
+    result.onError();
   }
 
   if (succ) {

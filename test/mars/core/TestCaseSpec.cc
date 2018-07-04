@@ -143,3 +143,18 @@ TEST_F(TestCaseSpec, throw_unknown_exception_on_run_test) {
   ASSERT_EQ(1, result.errorCount());
 }
 
+namespace {
+  struct UnknownExceptionOnSetUpTest : TestCase {
+    void setUp() override {
+      throw std::out_of_range("overflow");
+    }
+  };
+}
+
+TEST_F(TestCaseSpec, throw_unknown_exception_on_setup) {
+  UnknownExceptionOnSetUpTest test;
+  run(test);
+
+  ASSERT_EQ(0, result.failCount());
+  ASSERT_EQ(1, result.errorCount());
+}
