@@ -3,6 +3,8 @@
 
 #include "mars/core/Test.h"
 
+struct TestCaseFunctor;
+
 struct TestCase : Test {
   using Test::Test;
 
@@ -16,8 +18,7 @@ private:
   virtual void tearDown() {}
 
 private:
-  using Method = void(TestCase::*)();
-  bool protect(TestResult& result, Method method);
+  bool protect(TestResult&, const TestCaseFunctor&);
 };
 
 #endif

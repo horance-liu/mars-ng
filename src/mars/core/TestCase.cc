@@ -1,16 +1,39 @@
 #include "mars/core/TestCase.h"
 #include "mars/core/TestResult.h"
+#include "mars/core/internal/TestCaseFunctor.h"
 #include "mars/except/AssertionError.h"
 
 int TestCase::countTestCases() const {
   return 1;
 }
 
-bool TestCase::protect(TestResult& result, Method method) {
-  bool succ = false;
+namespace {
+  struct Functor : TestCaseFunctor {
+    using Method = void(TestCase::*)();
+
+    Functor(TestCase* self, Method method)
+      : self(self), method(method) {
+    }
+
+  private:
+    const std::string& getTestName() const override {
+      return self->getName();
+    }
+
+    bool operator()() const override {
+      (self->*method)();
+      return true;
+    }
+
+  private:
+    TestCase* self;
+    Method method;
+  };
+}
+
+bool TestCase::protect(TestResult& result, const TestCaseFunctor& f) {
   try {
-    (this->*method)();
-    succ = true;
+    return f();
   } catch (const AssertionError&) {
     result.onFail();
   } catch (const std::exception&) {
@@ -18,12 +41,12 @@ bool TestCase::protect(TestResult& result, Method method) {
   } catch (...) {
     result.onError();
   }
-  return succ;
+  return false;
 }
 
 void TestCase::run(TestResult& result) {
-  if (protect(result, &TestCase::setUp)) {
-    protect(result, &TestCase::runTest);
+  if (protect(result, Functor(this, &TestCase::setUp))) {
+    protect(result, Functor(this, &TestCase::runTest));
   }
-  protect(result, &TestCase::tearDown);
+  protect(result, Functor(this, &TestCase::tearDown));
 }
