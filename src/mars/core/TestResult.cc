@@ -30,7 +30,7 @@ bool TestResult::protect(const TestCaseFunctor& f) {
   } catch (const std::exception& e) {
     onError(std::string("uncaught std::exception") + " " + f.where() + "\n" + e.what());
   } catch (...) {
-    onError("");
+    onError(std::string("uncaught unknown exception") + " " + f.where() + "\n" + "");
   }
   return false;
 }
