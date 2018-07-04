@@ -3,7 +3,12 @@
 
 struct TestCase {
   virtual ~TestCase() {}
-  virtual void run() = 0;
+
+  void run();
+
+private:
+  virtual void setUp() {}
+  virtual void runTest() {}
 };
 
 #endif
