@@ -90,6 +90,12 @@ TEST_F(TestCaseSpec, throw_assertion_error_on_tear_down) {
 
 namespace {
   struct StdExceptionTest : TestCase {
+    const char* expectMsg() const {
+      return "uncaught std::exception in the runTest\n"
+              "std::exception";
+    }
+
+  private:
     void runTest() override {
       throw std::exception();
     }
@@ -102,6 +108,10 @@ TEST_F(TestCaseSpec, throw_std_exception_on_run_test) {
 
   ASSERT_EQ(0, result.failCount());
   ASSERT_EQ(1, result.errorCount());
+
+  auto& errors = result.getErrors();
+  ASSERT_FALSE(errors.empty());
+  ASSERT_EQ(test.expectMsg(), errors.front());
 }
 
 namespace {

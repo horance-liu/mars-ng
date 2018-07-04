@@ -15,16 +15,18 @@ struct TestResult {
   bool protect(const TestCaseFunctor&);
 
   const std::vector<std::string>& getFailures() const;
+  const std::vector<std::string>& getErrors() const;
 
 private:
   void onFail(std::string&& msg);
-  void onError();
+  void onError(std::string&& msg);
 
 private:
   int numOfFails;
   int numOfErrors;
 
   std::vector<std::string> failures;
+  std::vector<std::string> errors;
 };
 
 #endif
