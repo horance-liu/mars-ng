@@ -3,4 +3,5 @@
 void TestCase::run() {
   setUp();
   runTest();
+  tearDown();
 }

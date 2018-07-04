@@ -9,6 +9,7 @@ struct TestCase {
 private:
   virtual void setUp() {}
   virtual void runTest() {}
+  virtual void tearDown() {}
 };
 
 #endif
