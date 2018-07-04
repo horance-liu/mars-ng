@@ -3,12 +3,14 @@
 
 #include <string>
 
+struct TestResult;
+
 struct Test {
   explicit Test(const std::string& name = "");
   const std::string& getName() const;
 
   virtual ~Test() {}
-  virtual void run() = 0;
+  virtual void run(TestResult&) = 0;
 
 private:
   std::string name;

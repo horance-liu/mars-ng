@@ -1,5 +1,4 @@
 #include "mars/core/TestSuite.h"
-#include "mars/core/TestCase.h"
 
 void TestSuite::add(Test* test) {
   tests.push_back(test);
@@ -18,8 +17,8 @@ TestSuite::~TestSuite() {
   });
 }
 
-void TestSuite::run() {
-  foreach([](auto test) {
-    test->run();
+void TestSuite::run(TestResult& result) {
+  foreach([&result](auto test) {
+    test->run(result);
   });
 }
