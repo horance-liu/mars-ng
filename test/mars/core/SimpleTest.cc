@@ -20,11 +20,15 @@ namespace {
       wasTearDown = true;
     }
   };
+
+  void run(Test& test) {
+    test.run();
+  }
 }
 
 TEST(SimpleTest, make_sure_test_case_can_run_normally) {
   SimpleTest test;
-  test.run();
+  run(test);
 
   ASSERT_TRUE(test.wasSetUp);
   ASSERT_TRUE(test.wasRun);
