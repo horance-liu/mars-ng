@@ -28,6 +28,13 @@ namespace {
 
 namespace {
   struct AssertionFailedTest : TestCase {
+    const char* expectMsg() const {
+      return "assertion fail in the runTest\n"
+              "test.cpp:57\n"
+              "expected value == 2, but got 3";
+    }
+
+  private:
     void runTest() override {
       throw AssertionError("test.cpp:57", "expected value == 2, but got 3");
     }
@@ -39,6 +46,8 @@ TEST_F(TestCaseSpec, throw_assertion_error_on_run_test) {
   run(test);
 
   ASSERT_EQ(1, result.failCount());
+  ASSERT_FALSE(result.getFailures().empty());
+  ASSERT_EQ(test.expectMsg(), result.getFailures().front());
 }
 
 namespace {

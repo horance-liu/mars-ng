@@ -14,11 +14,15 @@ int TestResult::errorCount() const {
   return numOfErrors;
 }
 
+const std::vector<std::string>& TestResult::getFailures() const {
+  return failures;
+}
+
 bool TestResult::protect(const TestCaseFunctor& f) {
   try {
     return f();
   } catch (const AssertionError& e) {
-    onFail();
+    onFail(std::string("assertion fail") + " " + f.where() + "\n" + e.what());
   } catch (const std::exception& e) {
     onError();
   } catch (...) {
@@ -27,7 +31,8 @@ bool TestResult::protect(const TestCaseFunctor& f) {
   return false;
 }
 
-void TestResult::onFail() {
+void TestResult::onFail(std::string&& msg) {
+  failures.emplace_back(std::move(msg));
   numOfFails++;
 }
 

@@ -10,11 +10,15 @@ namespace {
   struct Functor : TestCaseFunctor {
     using Method = void(TestCase::*)();
 
-    Functor(TestCase* self, Method method)
-      : self(self), method(method) {
+    Functor(TestCase* self, Method method, const char* place)
+      : self(self), method(method), place(place) {
     }
 
   private:
+    const char* where() const override {
+      return place;
+    }
+
     bool operator()() const override {
       (self->*method)();
       return true;
@@ -23,12 +27,16 @@ namespace {
   private:
     TestCase* self;
     Method method;
+    const char* place;
   };
 }
 
+#define PROTECT(method) \
+    result.protect(Functor(this, &TestCase::method, "in the "#method))
+
 void TestCase::run(TestResult& result) {
-  if (result.protect(Functor(this, &TestCase::setUp))) {
-    result.protect(Functor(this, &TestCase::runTest));
+  if (PROTECT(setUp)) {
+    PROTECT(runTest);
   }
-  result.protect(Functor(this, &TestCase::tearDown));
+  PROTECT(tearDown);
 }
