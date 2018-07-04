@@ -5,8 +5,6 @@
 
 struct TestCaseFunctor {
   virtual ~TestCaseFunctor() {}
-
-  virtual const std::string& getTestName() const = 0;
   virtual bool operator()() const = 0;
 };
 

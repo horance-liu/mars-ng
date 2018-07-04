@@ -1,7 +1,6 @@
 #include "mars/core/TestCase.h"
 #include "mars/core/TestResult.h"
 #include "mars/core/internal/TestCaseFunctor.h"
-#include "mars/except/AssertionError.h"
 
 int TestCase::countTestCases() const {
   return 1;
@@ -16,10 +15,6 @@ namespace {
     }
 
   private:
-    const std::string& getTestName() const override {
-      return self->getName();
-    }
-
     bool operator()() const override {
       (self->*method)();
       return true;
@@ -31,22 +26,9 @@ namespace {
   };
 }
 
-bool TestCase::protect(TestResult& result, const TestCaseFunctor& f) {
-  try {
-    return f();
-  } catch (const AssertionError&) {
-    result.onFail();
-  } catch (const std::exception&) {
-    result.onError();
-  } catch (...) {
-    result.onError();
-  }
-  return false;
-}
-
 void TestCase::run(TestResult& result) {
-  if (protect(result, Functor(this, &TestCase::setUp))) {
-    protect(result, Functor(this, &TestCase::runTest));
+  if (result.protect(Functor(this, &TestCase::setUp))) {
+    result.protect(Functor(this, &TestCase::runTest));
   }
-  protect(result, Functor(this, &TestCase::tearDown));
+  result.protect(Functor(this, &TestCase::tearDown));
 }
