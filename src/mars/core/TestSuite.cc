@@ -1,6 +1,13 @@
 #include "mars/core/TestSuite.h"
 #include "mars/core/TestCase.h"
 
+TestSuite::TestSuite(const std::string& name) : name(name) {
+}
+
+const std::string& TestSuite::getName() const {
+  return name;
+}
+
 void TestSuite::add(Test* test) {
   tests.push_back(test);
 }

@@ -5,10 +5,13 @@
 #include "mars/core/Test.h"
 
 struct TestSuite : Test {
+  explicit TestSuite(const std::string& = "");
   ~TestSuite();
+
   void add(Test* test);
 
 private:
+  const std::string& getName() const override;
   void run() override;
 
 private:
@@ -16,6 +19,7 @@ private:
   void foreach(F f) const;
 
 private:
+  std::string name;
   std::vector<Test*> tests;
 };
 
