@@ -13,6 +13,8 @@ void TestCase::run(TestResult& result) {
     succ = true;
   } catch (const AssertionError&) {
     result.onFail();
+  } catch (const std::exception&) {
+    result.onError();
   }
 
   if (succ) {
