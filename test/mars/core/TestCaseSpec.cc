@@ -111,6 +111,21 @@ TEST_F(TestCaseSpec, throw_std_exception_on_setup) {
   ASSERT_EQ(1, result.errorCount());
 }
 
+namespace {
+  struct StdExceptionOnTearDownTest : TestCase {
+    void tearDown() override {
+      throw std::exception();
+    }
+  };
+}
+
+TEST_F(TestCaseSpec, throw_std_exception_on_tear_down) {
+  StdExceptionOnTearDownTest test;
+  run(test);
+
+  ASSERT_EQ(0, result.failCount());
+  ASSERT_EQ(1, result.errorCount());
+}
 
 namespace {
   struct UnknownExceptionTest : TestCase {

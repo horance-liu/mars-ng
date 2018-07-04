@@ -33,5 +33,7 @@ void TestCase::run(TestResult& result) {
     tearDown();
   } catch (const AssertionError&) {
     result.onFail();
+  } catch (const std::exception&) {
+    result.onError();
   }
 }
