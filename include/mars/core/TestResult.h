@@ -3,6 +3,12 @@
 
 struct TestResult {
   TestResult();
+
+  int failCount() const;
+  void onFail();
+
+private:
+  int numOfFails;
 };
 
 #endif
