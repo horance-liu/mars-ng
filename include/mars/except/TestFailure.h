@@ -7,6 +7,7 @@ struct TestFailure {
   TestFailure(std::string&& msg, bool failure);
 
   bool isFailure() const;
+  bool isError() const;
   const std::string& getExceptionMsg() const;
 
 private:

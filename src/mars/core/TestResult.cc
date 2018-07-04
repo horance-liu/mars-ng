@@ -1,6 +1,7 @@
 #include "mars/core/TestResult.h"
 #include "mars/core/internal/TestCaseFunctor.h"
 #include "mars/except/AssertionError.h"
+#include "mars/except/TestFailure.h"
 
 TestResult::TestResult()
   : numOfFails(0), numOfErrors(0) {
@@ -25,10 +26,6 @@ const std::vector<TestFailure*>& TestResult::getFailures() const {
   return failures;
 }
 
-const std::vector<std::string>& TestResult::getErrors() const {
-  return errors;
-}
-
 bool TestResult::protect(const TestCaseFunctor& f) {
   try {
     return f();
@@ -48,6 +45,6 @@ void TestResult::onFail(std::string&& msg) {
 }
 
 void TestResult::onError(std::string&& msg) {
-  errors.emplace_back(std::move(msg));
+  failures.push_back(new TestFailure(std::move(msg), false));
   numOfErrors++;
 }

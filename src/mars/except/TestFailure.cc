@@ -4,6 +4,11 @@ TestFailure::TestFailure(std::string&& msg, bool failure)
   : msg(std::move(msg)), failure(failure) {
 }
 
+bool TestFailure::isError() const {
+  return !failure;
+}
+
+
 bool TestFailure::isFailure() const {
   return failure;
 }

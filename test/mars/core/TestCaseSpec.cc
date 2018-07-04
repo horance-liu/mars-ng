@@ -2,6 +2,7 @@
 #include "mars/core/TestCase.h"
 #include "mars/core/TestResult.h"
 #include "mars/except/AssertionError.h"
+#include "mars/except/TestFailure.h"
 
 namespace {
   void assertName(const Test& test, const char* expected) {
@@ -118,10 +119,18 @@ TEST_F(TestCaseSpec, throw_std_exception_on_run_test) {
 
   ASSERT_EQ(0, result.failCount());
   ASSERT_EQ(1, result.errorCount());
+}
 
-  auto& errors = result.getErrors();
+TEST_F(TestCaseSpec, cache_error_if_throw_std_exception_on_run_test) {
+  StdExceptionTest test;
+  run(test);
+
+  auto& errors = result.getFailures();
   ASSERT_FALSE(errors.empty());
-  ASSERT_EQ(test.expectMsg(), errors.front());
+
+  auto error = errors.front();
+  ASSERT_TRUE(error->isError());
+  ASSERT_EQ(test.expectMsg(), error->getExceptionMsg());
 }
 
 namespace {
@@ -177,10 +186,18 @@ TEST_F(TestCaseSpec, throw_unknown_exception_on_run_test) {
 
   ASSERT_EQ(0, result.failCount());
   ASSERT_EQ(1, result.errorCount());
+}
 
-  auto& errors = result.getErrors();
+TEST_F(TestCaseSpec, cache_error_if_throw_unknown_exception_on_run_test) {
+  UnknownExceptionTest test;
+  run(test);
+
+  auto& errors = result.getFailures();
   ASSERT_FALSE(errors.empty());
-  ASSERT_EQ(test.expectMsg(), errors.front());
+
+  auto error = errors.front();
+  ASSERT_TRUE(error->isError());
+  ASSERT_EQ(test.expectMsg(), error->getExceptionMsg());
 }
 
 namespace {
