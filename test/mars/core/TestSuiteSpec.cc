@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include "mars/core/TestCase.h"
-#include "mars/core/TestSuite.h"
-#include "mars/core/TestResult.h"
+#include <mars/core/TestCase.h>
+#include <mars/core/TestResult.h>
+#include <mars/core/TestSuite.h>
 
 namespace {
   struct TestSuiteSpec : testing::Test {

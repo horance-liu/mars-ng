@@ -2,6 +2,7 @@
 #define H1DD5DED6_6EC7_4C5C_A27F_063CFDA78F84
 
 #include <string>
+#include <functional>
 
 struct TestResult;
 

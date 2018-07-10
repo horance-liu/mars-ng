@@ -1,6 +1,7 @@
-#include "mars/core/TestResult.h"
-#include "mars/core/internal/TestCaseFunctor.h"
-#include "mars/except/AssertionError.h"
+#include <mars/core/TestResult.h>
+#include <mars/core/internal/TestCaseFunctor.h>
+#include <mars/except/AssertionError.h>
+
 
 TestResult::TestResult()
   : numOfFails(0), numOfErrors(0) {

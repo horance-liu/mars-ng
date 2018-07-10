@@ -1,4 +1,4 @@
-#include "mars/except/AssertionError.h"
+#include <mars/except/AssertionError.h>
 
 AssertionError::AssertionError(const std::string& src,
   const std::string& msg) : msg(src + "\n" + msg) {
