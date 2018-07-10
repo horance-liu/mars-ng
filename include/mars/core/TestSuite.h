@@ -1,12 +1,12 @@
 #ifndef H997A5C6C_C6D5_4E01_8DD5_8B11D40280AD
 #define H997A5C6C_C6D5_4E01_8DD5_8B11D40280AD
 
+#include <mars/core/Test.h>
 #include <vector>
-#include "mars/core/Test.h"
 
 struct TestSuite : Test {
   using Test::Test;
-  ~TestSuite();
+  ~TestSuite() override;
 
   void add(Test* test);
 

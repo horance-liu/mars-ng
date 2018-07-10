@@ -1,6 +1,6 @@
-#include "mars/core/TestCase.h"
-#include "mars/core/TestResult.h"
-#include "mars/core/internal/TestCaseFunctor.h"
+#include <mars/core/TestCase.h>
+#include <mars/core/TestResult.h>
+#include <mars/core/internal/TestCaseFunctor.h>
 
 int TestCase::countTestCases() const {
   return 1;

@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
-#include "mars/core/TestCase.h"
-#include "mars/core/TestResult.h"
-#include "mars/except/AssertionError.h"
-#include "mars/except/TestFailure.h"
+#include <mars/core/TestCase.h>
+#include <mars/core/TestResult.h>
+#include <mars/except/AssertionError.h>
 
 namespace {
   void assertName(const Test& test, const char* expected) {

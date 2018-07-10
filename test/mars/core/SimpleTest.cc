@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "mars/core/TestCase.h"
-#include "mars/core/TestResult.h"
+#include <mars/core/TestCase.h>
+#include <mars/core/TestResult.h>
 
 namespace {
   struct SimpleTest : TestCase {

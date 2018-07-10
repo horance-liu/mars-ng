@@ -1,4 +1,4 @@
-#include "mars/core/TestSuite.h"
+#include <mars/core/TestSuite.h>
 
 void TestSuite::add(Test* test) {
   tests.push_back(test);
