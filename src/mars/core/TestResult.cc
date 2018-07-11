@@ -1,18 +1,23 @@
 #include <mars/core/TestResult.h>
 #include <mars/core/internal/TestCaseFunctor.h>
 #include <mars/except/AssertionError.h>
+#include <algorithm>
 
-
-TestResult::TestResult()
-  : numOfFails(0), numOfErrors(0) {
+template <typename Pred>
+inline int TestResult::count(Pred pred) const {
+  return std::count_if(failures.begin(), failures.end(), pred);
 }
 
 int TestResult::failCount() const {
-  return numOfFails;
+  return count([](auto& e) {
+    return e.isFailure();
+  });
 }
 
 int TestResult::errorCount() const {
-  return numOfErrors;
+  return count([](auto& e) {
+    return e.isError();
+  });
 }
 
 const std::vector<TestFailure>& TestResult::getFailures() const {
@@ -20,30 +25,38 @@ const std::vector<TestFailure>& TestResult::getFailures() const {
 }
 
 namespace {
-  std::string msg(const char* why, const char* where, const char* what = "") {
+  struct NilException {
+    const char* what() const {
+      return "";
+    }
+  };
+
+  inline std::string msg(const char* why, const char* where, const char* what) {
     return std::string(why) + ' ' + where + '\n' + what;
   }
 }
+
+#define ON_FAIL(except)  onFail(msg(except, f.where(), e.what()))
+#define ON_ERROR(except) onError(msg(except, f.where(), e.what()))
 
 bool TestResult::protect(const TestCaseFunctor& f) {
   try {
     return f();
   } catch (const AssertionError& e) {
-    onFail(msg("assertion fail", f.where(), e.what()));
+    ON_FAIL("assertion fail");
   } catch (const std::exception& e) {
-    onError(msg("uncaught std::exception", f.where(), e.what()));
+    ON_ERROR("uncaught std::exception");
   } catch (...) {
-    onError(msg("uncaught unknown exception", f.where()));
+    NilException e;
+    ON_ERROR("uncaught unknown exception");
   }
   return false;
 }
 
 void TestResult::onFail(std::string&& msg) {
   failures.emplace_back(std::move(msg), true);
-  numOfFails++;
 }
 
 void TestResult::onError(std::string&& msg) {
   failures.emplace_back(std::move(msg), false);
-  numOfErrors++;
 }

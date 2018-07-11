@@ -8,23 +8,21 @@
 struct TestCaseFunctor;
 
 struct TestResult {
-  TestResult();
-
   int failCount() const;
   int errorCount() const;
 
-  bool protect(const TestCaseFunctor&);
-
   const std::vector<TestFailure>& getFailures() const;
+
+  bool protect(const TestCaseFunctor&);
 
 private:
   void onFail(std::string&&);
   void onError(std::string&&);
 
-private:
-  int numOfFails;
-  int numOfErrors;
+  template <typename Pred>
+  int count(Pred) const;
 
+private:
   std::vector<TestFailure> failures;
 };
 
